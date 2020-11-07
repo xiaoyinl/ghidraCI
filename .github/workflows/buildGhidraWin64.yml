@@ -1,0 +1,63 @@
+name: Ghidra
+on: [workflow_dispatch]
+jobs:
+  # Original author: Swyter (https://github.com/Swyter)
+  # This is modified based on https://github.com/NationalSecurityAgency/ghidra/blob/4765d4e7c75b28d57c6b859ec51c79b16db3b1d5/.github/workflows/ghidra-buildbot.yml
+  # swy: 64-bit windows build --
+  build-win:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+    - name: Checkout ghidra
+      uses: actions/checkout@v2
+      with:
+        repository: NationalSecurityAgency/ghidra
+        path: ghidra
+
+    - name: Checkout ghidra-data
+      uses: actions/checkout@v2
+      with:
+        repository: NationalSecurityAgency/ghidra-data
+        path: ghidra-data
+
+    - name: Configure ghidra data
+      run: |      
+        dir .
+        mkdir "ghidra.bin\Ghidra\Features\FunctionID\src\main\fidb"
+        copy /Y "ghidra-data\FunctionId\*.fidb" "ghidra.bin\Ghidra\Features\FunctionID\src\main\fidb"
+        dir .
+        dir "ghidra.bin\Ghidra\Features\FunctionID\src\main\fidb"
+      shell: cmd
+
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Install dependencies
+      run: |
+        java -version
+        choco install winflexbison
+        cd $env:programdata/chocolatey/lib/winflexbison/tools
+        copy win_flex.exe flex.exe
+        copy win_bison.exe bison.exe
+        dir .
+      shell: pwsh
+
+    - name: Run fetchDependencies.gradle
+      run: |
+        cd ghidra
+        gradle --init-script gradle/support/fetchDependencies.gradle init
+        
+    - name: Build Ghidra
+      run: |
+        cd ghidra        
+        $env:Path += ";$env:programdata\chocolatey\lib\winflexbison\tools"
+        gradle buildGhidra --stacktrace
+        
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: WindowsGhidra
+        path: ghidra/build/dist/
+ 
