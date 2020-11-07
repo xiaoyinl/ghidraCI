@@ -8,6 +8,11 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
+    - name: Checkout diff
+      uses: actions/checkout@v2
+      with:
+        path: patches
+
     - name: Checkout ghidra
       uses: actions/checkout@v2
       with:
@@ -19,6 +24,19 @@ jobs:
       with:
         repository: NationalSecurityAgency/ghidra-data
         path: ghidra-data
+
+    - name: Apply patches
+      run: |
+        dir .
+        dir patches
+        cd ghidra
+        git status
+        for %%f in (..\patches\diff\*.patch) do (
+          echo %%f:
+          git apply --ignore-space-change --ignore-whitespace "%%f"
+        )
+        git status
+      shell: cmd
 
     - name: Configure ghidra data
       run: |      
