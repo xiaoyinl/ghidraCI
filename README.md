@@ -1,0 +1,2 @@
+# ghidraCI
+Test Ghidra building
