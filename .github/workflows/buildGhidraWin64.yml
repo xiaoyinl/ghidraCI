@@ -52,16 +52,6 @@ jobs:
       with:
         java-version: 11
 
-    - name: Install dependencies
-      run: |
-        java -version
-        choco install winflexbison
-        cd $env:programdata/chocolatey/lib/winflexbison/tools
-        copy win_flex.exe flex.exe
-        copy win_bison.exe bison.exe
-        dir .
-      shell: pwsh
-
     - name: Run fetchDependencies.gradle
       run: |
         cd ghidra
