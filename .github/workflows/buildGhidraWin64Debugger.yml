@@ -1,4 +1,4 @@
-name: Ghidra
+name: Ghidra with Debugger
 on: [workflow_dispatch]
 jobs:
   # Original author: Swyter (https://github.com/Swyter)
