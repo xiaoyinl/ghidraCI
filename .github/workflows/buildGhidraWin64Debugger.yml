@@ -18,6 +18,7 @@ jobs:
       with:
         repository: NationalSecurityAgency/ghidra
         path: ghidra
+        ref: debugger
 
     - name: Checkout ghidra-data
       uses: actions/checkout@v2
