@@ -25,7 +25,9 @@ jobs:
         repository: NationalSecurityAgency/ghidra-data
         path: ghidra-data
 
+    # Disabled because there's no patch now
     - name: Apply patches
+      if: ${{ 1 > 2 }}
       shell: cmd
       run: |
         dir .
