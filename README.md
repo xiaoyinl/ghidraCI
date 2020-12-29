@@ -1,2 +1,2 @@
 # ghidraCI
-Test Ghidra building
+Test [Ghidra](https://github.com/NationalSecurityAgency/ghidra) building
