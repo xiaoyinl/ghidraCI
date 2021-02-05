@@ -52,7 +52,7 @@ jobs:
     - name: Setup Java JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 15
 
     - name: Run fetchDependencies.gradle
       run: |
@@ -63,7 +63,7 @@ jobs:
       run: |
         cd ghidra        
         $env:Path += ";$env:programdata\chocolatey\lib\winflexbison\tools"
-        gradle buildGhidra --stacktrace
+        gradle buildGhidra -x ip --stacktrace
         
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
