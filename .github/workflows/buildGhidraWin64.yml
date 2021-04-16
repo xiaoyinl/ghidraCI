@@ -19,12 +19,6 @@ jobs:
         repository: NationalSecurityAgency/ghidra
         path: ghidra
 
-    - name: Checkout ghidra-data
-      uses: actions/checkout@v2
-      with:
-        repository: NationalSecurityAgency/ghidra-data
-        path: ghidra-data
-
     # Disabled because there's no patch now
     - name: Apply patches
       if: ${{ 1 > 2 }}
@@ -40,29 +34,19 @@ jobs:
         git status
       shell: cmd
 
-    - name: Configure ghidra data
-      run: |      
-        dir .
-        mkdir "ghidra.bin\Ghidra\Features\FunctionID\src\main\fidb"
-        copy /Y "ghidra-data\FunctionId\*.fidb" "ghidra.bin\Ghidra\Features\FunctionID\src\main\fidb"
-        dir .
-        dir "ghidra.bin\Ghidra\Features\FunctionID\src\main\fidb"
-      shell: cmd
-
     - name: Setup Java JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 17-ea
+        java-version: 11
 
     - name: Run fetchDependencies.gradle
       run: |
         cd ghidra
-        gradle --init-script gradle/support/fetchDependencies.gradle init
+        gradle -I gradle/support/fetchDependencies.gradle init
         
     - name: Build Ghidra
       run: |
-        cd ghidra        
-        $env:Path += ";$env:programdata\chocolatey\lib\winflexbison\tools"
+        cd ghidra
         gradle buildGhidra -x ip --stacktrace
         
     - name: Archive production artifacts
