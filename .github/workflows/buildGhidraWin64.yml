@@ -40,11 +40,13 @@ jobs:
         java-version: 11
 
     - name: Run fetchDependencies.gradle
+      shell: cmd
       run: |
         cd ghidra
         gradle -I gradle/support/fetchDependencies.gradle init
         
     - name: Build Ghidra
+      shell: cmd
       run: |
         cd ghidra
         gradle buildGhidra -x ip --stacktrace
