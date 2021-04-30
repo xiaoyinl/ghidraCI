@@ -50,16 +50,16 @@ jobs:
       run: |
         cd ghidra
         gradle buildGhidra -x ip --stacktrace
-    
-    - name: Test Ghidra
-      shell: cmd
-      run: |
-        cd ghidra
-        gradle combinedTestReport
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
       with:
         name: WindowsGhidra
         path: ghidra/build/dist/
+
+    - name: Test Ghidra
+      shell: cmd
+      run: |
+        cd ghidra
+        gradle combinedTestReport
  
