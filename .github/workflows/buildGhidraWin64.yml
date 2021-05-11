@@ -53,13 +53,13 @@ jobs:
       shell: cmd
       run: |        
         cd "ghi dra"
-        gradle -I gradle/support/fetchDependencies.gradle init
+        gradlew.bat -I gradle/support/fetchDependencies.gradle init
 
     - name: Build Ghidra
       shell: cmd
       run: |
         cd "ghi dra"
-        gradle buildGhidra -x ip --stacktrace
+        gradlew.bat buildGhidra -x ip --stacktrace
 
     - name: Archive production artifacts
       if: ${{ 1 > 2 }}
@@ -73,5 +73,5 @@ jobs:
       shell: cmd
       run: |
         cd ghidra
-        gradle combinedTestReport
+        gradlew.bat combinedTestReport
  
