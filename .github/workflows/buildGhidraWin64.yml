@@ -40,14 +40,14 @@ jobs:
       with:
         java-version: 11
 
-    - name: Create gradle wrapper
+    - name: Copy gradle wrapper
       shell: cmd
       run: |
-        gradle wrapper --gradle-version 6.8.3
-        copy wrapper.bat "ghi dra\wrapper.bat"
+        copy patches\gradleWrapper\gradlew.bat "ghi dra\gradlew.bat"
         mkdir "ghi dra\gradle\wrapper"
-        copy gradle\wrapper\gradle-wrapper.jar "ghi dra\gradle\wrapper\gradle-wrapper.jar"
-        copy gradle\wrapper\gradle-wrapper.properties "ghi dra\gradle\wrapper\gradle-wrapper.properties"
+        copy patches\gradleWrapper\gradlew "ghi dra\gradlew"
+        copy patches\gradleWrapper\gradle-wrapper.jar "ghi dra\gradle\wrapper"
+        copy patches\gradleWrapper\gradle-wrapper.properties "ghi dra\gradle\wrapper"
 
     - name: Run fetchDependencies.gradle
       shell: cmd
