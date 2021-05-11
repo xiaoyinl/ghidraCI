@@ -40,13 +40,21 @@ jobs:
       with:
         java-version: 11
 
-    - name: Run fetchDependencies.gradle
+    - name: Create gradle wrapper
       shell: cmd
       run: |
-        cd "ghi dra"
         gradle wrapper --gradle-version 6.8.3
+        copy wrapper.bat "ghi dra\wrapper.bat"
+        mkdir "ghi dra\gradle\wrapper"
+        copy gradle\wrapper\gradle-wrapper.jar "ghi dra\gradle\wrapper\gradle-wrapper.jar"
+        copy gradle\wrapper\gradle-wrapper.properties "ghi dra\gradle\wrapper\gradle-wrapper.properties"
+
+    - name: Run fetchDependencies.gradle
+      shell: cmd
+      run: |        
+        cd "ghi dra"
         gradle -I gradle/support/fetchDependencies.gradle init
-        
+
     - name: Build Ghidra
       shell: cmd
       run: |
