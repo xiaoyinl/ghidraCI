@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: NationalSecurityAgency/ghidra
-        path: ghidra
+        path: "ghi dra"
 
     # Disabled because there's no patch now
     - name: Apply patches
@@ -25,7 +25,8 @@ jobs:
       run: |
         dir .
         dir patches
-        cd ghidra
+        cd "ghi dra"
+        dir
         git status
         for %%f in (..\patches\diff\*.patch) do (
           echo %%f:
@@ -42,22 +43,24 @@ jobs:
     - name: Run fetchDependencies.gradle
       shell: cmd
       run: |
-        cd ghidra
+        cd "ghi dra"
         gradle -I gradle/support/fetchDependencies.gradle init
         
     - name: Build Ghidra
       shell: cmd
       run: |
-        cd ghidra
+        cd "ghi dra"
         gradle buildGhidra -x ip --stacktrace
 
     - name: Archive production artifacts
+      if: ${{ 1 > 2 }}
       uses: actions/upload-artifact@v2
       with:
         name: WindowsGhidra
         path: ghidra/build/dist/
 
     - name: Test Ghidra
+      if: ${{ 1 > 2 }}
       shell: cmd
       run: |
         cd ghidra
