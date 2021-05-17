@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: NationalSecurityAgency/ghidra
-        path: "ghi dra"
+        path: ghidra
 
     # Disabled because there's no patch now
     - name: Apply patches
@@ -25,7 +25,7 @@ jobs:
       run: |
         dir .
         dir patches
-        cd "ghi dra"
+        cd ghidra
         dir
         git status
         for %%f in (..\patches\diff\*.patch) do (
@@ -40,26 +40,17 @@ jobs:
       with:
         java-version: 11
 
-    - name: Copy gradle wrapper
-      shell: cmd
-      run: |
-        copy patches\gradleWrapper\gradlew.bat "ghi dra\gradlew.bat"
-        mkdir "ghi dra\gradle\wrapper"
-        copy patches\gradleWrapper\gradlew "ghi dra\gradlew"
-        copy patches\gradleWrapper\gradle-wrapper.jar "ghi dra\gradle\wrapper"
-        copy patches\gradleWrapper\gradle-wrapper.properties "ghi dra\gradle\wrapper"
-
     - name: Run fetchDependencies.gradle
       shell: cmd
-      run: |        
-        cd "ghi dra"
-        gradlew.bat -I gradle/support/fetchDependencies.gradle init
+      run: |
+        cd ghidra
+        gradle -I gradle/support/fetchDependencies.gradle init
 
     - name: Build Ghidra
       shell: cmd
       run: |
-        cd "ghi dra"
-        gradlew.bat buildGhidra -x ip --stacktrace
+        cd ghidra
+        gradle buildGhidra -x ip --stacktrace
 
     - name: Archive production artifacts
       if: ${{ 1 > 2 }}
@@ -73,5 +64,5 @@ jobs:
       shell: cmd
       run: |
         cd ghidra
-        gradlew.bat combinedTestReport
+        gradle combinedTestReport
  
